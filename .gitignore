@@ -24,6 +24,16 @@ Thumbs.db
 
 # Testing
 coverage/
+test-results/
+
+# Module Federation temp
+.__mf__temp/
+
+# API data
+app_data/
+
+# Plans (generated, not source)
+Plans/
 
 # Logs
 *.log

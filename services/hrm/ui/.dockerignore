@@ -1,0 +1,10 @@
+node_modules
+.env
+.env.*
+Plans/
+test-results/
+.__mf__temp/
+.git
+*.md
+coverage/
+.vite/

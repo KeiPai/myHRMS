@@ -43,7 +43,7 @@ apiClient.interceptors.response.use(
       // Instead, notify parent window or redirect to Shell app
       if (window.parent !== window) {
         // We're in an iframe/embedded context
-        window.parent.postMessage({ type: 'AUTH_ERROR', status: 401 }, '*');
+        window.parent.postMessage({ type: 'AUTH_ERROR', status: 401 }, window.location.origin);
       } else {
         // Standalone mode - redirect to Shell login
         const shellUrl = import.meta.env.VITE_SHELL_URL || 'http://localhost:5173';

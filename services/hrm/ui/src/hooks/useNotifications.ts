@@ -35,11 +35,15 @@ export const useNotifications = (autoFetch: boolean = true) => {
   const markAsRead = useCallback(async (notificationId: string) => {
     try {
       await apiClient.put(`/notifications/${notificationId}/read`);
-      setData(prev => 
+      setData(prev =>
         prev.map(n => n.id === notificationId ? { ...n, isRead: true } : n)
       );
     } catch (err: any) {
-      console.error('Failed to mark notification as read', err);
+      setError({
+        message: err.response?.data?.message || 'Failed to mark notification as read',
+        statusCode: err.response?.status,
+        details: err.response?.data
+      });
     }
   }, []);
 
@@ -48,7 +52,11 @@ export const useNotifications = (autoFetch: boolean = true) => {
       await apiClient.put('/notifications/read-all');
       setData(prev => prev.map(n => ({ ...n, isRead: true })));
     } catch (err: any) {
-      console.error('Failed to mark all notifications as read', err);
+      setError({
+        message: err.response?.data?.message || 'Failed to mark all notifications as read',
+        statusCode: err.response?.status,
+        details: err.response?.data
+      });
     }
   }, []);
 

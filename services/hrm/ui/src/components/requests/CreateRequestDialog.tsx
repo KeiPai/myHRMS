@@ -2,6 +2,7 @@ import { useState } from 'react';
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter,
   Button, Input, Label, Select, SelectTrigger, SelectContent, SelectItem, SelectValue,
+  Alert, AlertDescription,
 } from '@venizia/ardor-ui-kit';
 import { Plus } from 'lucide-react';
 import type { RequestType } from '@/types';
@@ -16,9 +17,11 @@ export function CreateRequestDialog({ onSubmit, isLoading }: CreateRequestDialog
   const [type, setType] = useState<RequestType>('leave');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
     try {
       await onSubmit({ type, title, description });
       setType('leave');
@@ -26,7 +29,7 @@ export function CreateRequestDialog({ onSubmit, isLoading }: CreateRequestDialog
       setDescription('');
       setOpen(false);
     } catch {
-      // Keep dialog open with form data on failure
+      setError('Failed to submit request. Please try again.');
     }
   };
 
@@ -43,8 +46,13 @@ export function CreateRequestDialog({ onSubmit, isLoading }: CreateRequestDialog
           <DialogTitle>Create New Request</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
+          {error && (
+            <Alert variant="destructive">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
           <div className="space-y-2">
-            <Label>Type</Label>
+            <Label htmlFor="request-type">Type</Label>
             <Select value={type} onValueChange={(v) => setType(v as RequestType)}>
               <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
@@ -56,12 +64,12 @@ export function CreateRequestDialog({ onSubmit, isLoading }: CreateRequestDialog
             </Select>
           </div>
           <div className="space-y-2">
-            <Label>Title</Label>
-            <Input value={title} onChange={(e) => setTitle(e.target.value)} required />
+            <Label htmlFor="request-title">Title</Label>
+            <Input id="request-title" value={title} onChange={(e) => setTitle(e.target.value)} required />
           </div>
           <div className="space-y-2">
-            <Label>Description</Label>
-            <Input value={description} onChange={(e) => setDescription(e.target.value)} />
+            <Label htmlFor="request-description">Description</Label>
+            <Input id="request-description" value={description} onChange={(e) => setDescription(e.target.value)} />
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => setOpen(false)}>Cancel</Button>

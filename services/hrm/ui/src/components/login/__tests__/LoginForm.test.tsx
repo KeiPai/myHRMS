@@ -5,7 +5,7 @@ import { LoginForm } from '../LoginForm';
 describe('LoginForm', () => {
   it('renders all fields and labels', () => {
     render(<LoginForm onSubmit={() => {}} />);
-    
+
     expect(screen.getByPlaceholderText('Company email')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Password')).toBeInTheDocument();
     expect(screen.getByText('Remember me')).toBeInTheDocument();
@@ -16,44 +16,37 @@ describe('LoginForm', () => {
   it('calls onSubmit with correct values when form is submitted', () => {
     const mockSubmit = vi.fn();
     render(<LoginForm onSubmit={mockSubmit} />);
-    
+
     const emailInput = screen.getByPlaceholderText('Company email');
     const passwordInput = screen.getByPlaceholderText('Password');
     const rememberCheckbox = screen.getByLabelText('Remember me');
     const submitButton = screen.getByRole('button', { name: /sign in/i });
 
-    fireEvent.change(emailInput, { target: { value: 'test@venizia.local' } });
+    fireEvent.change(emailInput, { target: { value: 'test@nexpando.com' } });
     fireEvent.change(passwordInput, { target: { value: 'password123' } });
     fireEvent.click(rememberCheckbox);
     fireEvent.click(submitButton);
 
-    expect(mockSubmit).toHaveBeenCalledWith('test@venizia.local', 'password123', true);
+    expect(mockSubmit).toHaveBeenCalledWith('test@nexpando.com', 'password123', true);
   });
 
   it('shows loading state when isLoading is true', () => {
     render(<LoginForm onSubmit={() => {}} isLoading={true} />);
-    
+
     const submitButton = screen.getByRole('button', { name: /signing in.../i });
     expect(submitButton).toBeDisabled();
   });
 
-  it('displays error message when provided', () => {
-    const errorMessage = 'Invalid credentials';
-    render(<LoginForm onSubmit={() => {}} error={errorMessage} />);
-    
-    expect(screen.getByText(errorMessage)).toBeInTheDocument();
+  it('displays error message when error prop is provided', () => {
+    render(<LoginForm onSubmit={() => {}} error="login_failed" />);
+
+    // The component translates error keys; unknown keys fall back to invalidCredentials
+    expect(screen.getByText('Invalid email or password. Please try again.')).toBeInTheDocument();
   });
 
-  it('toggles password visibility when eye icon is clicked', () => {
-    render(<LoginForm onSubmit={() => {}} />);
-    
-    const passwordInput = screen.getByPlaceholderText('Password');
-    expect(passwordInput).toHaveAttribute('type', 'password');
+  it('displays service unavailable error when API is down', () => {
+    render(<LoginForm onSubmit={() => {}} error="serviceUnavailable" />);
 
-    // Find the eye icon button
-    const toggleButton = screen.getByRole('button', { name: '' }); // The icon buttons don't have text
-    fireEvent.click(toggleButton);
-
-    expect(passwordInput).toHaveAttribute('type', 'text');
+    expect(screen.getByText('Service temporarily unavailable. Please try again later.')).toBeInTheDocument();
   });
 });

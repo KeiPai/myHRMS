@@ -43,7 +43,7 @@ export default defineConfig(({ mode }) => ({
   ],
   build: {
     target: 'esnext',
-    minify: false,
+    minify: mode !== 'development',
     cssCodeSplit: false, // Required for Module Federation
     rollupOptions: {
       output: {

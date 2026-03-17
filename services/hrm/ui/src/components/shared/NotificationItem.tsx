@@ -45,7 +45,7 @@ export function NotificationItem({ notification, onMarkRead: _onMarkRead }: Noti
     <div className={cn('flex items-start gap-4 rounded-lg px-4 py-4', !notification.isRead && 'bg-white')}>
       <div className="mt-2 flex-shrink-0">
         {!notification.isRead ? (
-          <div className="h-2.5 w-2.5 rounded-full bg-[hsl(var(--primary))]" />
+          <div className="h-2.5 w-2.5 rounded-full bg-[hsl(var(--primary))]" aria-label="Unread" />
         ) : (
           <div className="h-2.5 w-2.5" />
         )}

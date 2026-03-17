@@ -84,7 +84,7 @@ export function RequestTable({ requests }: RequestTableProps) {
                     </Badge>
                   </td>
                   <td className="px-6 py-4">
-                    <button className="text-muted-foreground hover:text-foreground">
+                    <button aria-label="More options" className="text-muted-foreground hover:text-foreground">
                       <MoreHorizontal className="h-4 w-4" />
                     </button>
                   </td>

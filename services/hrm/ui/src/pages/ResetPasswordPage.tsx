@@ -22,6 +22,7 @@ const translations = {
     // Errors
     invalidToken: 'Invalid or expired reset link. Please request a new one.',
     missingToken: 'No reset token found. Please use the link from your email.',
+    serviceUnavailable: 'Service temporarily unavailable. Please try again later.',
   },
   vi: {
     title: 'Đặt mật khẩu mới',
@@ -40,6 +41,7 @@ const translations = {
     // Errors
     invalidToken: 'Liên kết đặt lại không hợp lệ hoặc đã hết hạn. Vui lòng yêu cầu liên kết mới.',
     missingToken: 'Không tìm thấy mã đặt lại. Vui lòng sử dụng liên kết từ email của bạn.',
+    serviceUnavailable: 'Dịch vụ tạm thời không khả dụng. Vui lòng thử lại sau.',
   },
 } as const;
 
@@ -97,8 +99,7 @@ export function ResetPasswordPage() {
       setSuccess(true);
     } catch (err) {
       if (err instanceof ApiUnavailableError) {
-        // API not deployed — dev fallback: show success
-        setSuccess(true);
+        setErrorKey('serviceUnavailable');
       } else {
         setErrorKey('invalidToken');
       }

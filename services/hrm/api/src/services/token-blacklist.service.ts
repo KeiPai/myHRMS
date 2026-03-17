@@ -3,6 +3,7 @@
  * Manages blacklisted tokens for logout functionality
  */
 
+import { createHash } from 'crypto';
 import { inject } from '@venizia/ignis';
 import { BaseService } from '@venizia/ignis';
 import { CacheService } from './cache.service';
@@ -49,13 +50,11 @@ export class TokenBlacklistService extends BaseService {
 
   /**
    * Get blacklist cache key for token
-   * Uses first 20 chars of token as key (for privacy)
+   * Uses SHA-256 hash of full token to avoid key collisions
    */
   private getBlacklistKey(token: string): string {
-    // Use a hash or first part of token as key
-    // In production, consider using a proper hash function
-    const tokenPrefix = token.substring(0, 20);
-    return `blacklist:token:${tokenPrefix}`;
+    const hash = createHash('sha256').update(token).digest('hex').substring(0, 32);
+    return `blacklist:token:${hash}`;
   }
 }
 

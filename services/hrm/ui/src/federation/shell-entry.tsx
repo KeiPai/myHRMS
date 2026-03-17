@@ -11,6 +11,7 @@
 
 import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { ErrorBoundary } from '../components/shared/ErrorBoundary';
 import { AppLayout } from '../components/layout/AppLayout';
 
 const LoginPage = React.lazy(() => import('../pages/LoginPage').then(m => ({ default: m.LoginPage })));
@@ -184,22 +185,24 @@ const HrmAppRemote = () => {
   }
 
   return (
-    <Suspense fallback={<PageLoader />}>
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route element={<AppLayout />}>
-          <Route index element={<Navigate to="/login" replace />} />
-          <Route path="/dashboard" element={<Navigate to="/directory" replace />} />
-          <Route path="/directory" element={<EmployeeDirectoryPage />} />
-          <Route path="/profile/:id" element={<EmployeeProfilePage />} />
-          <Route path="/profile" element={<EmployeeDirectoryPage />} />
-          <Route path="/requests" element={<MyRequestsPage />} />
-          <Route path="/notifications" element={<NotificationsPage />} />
-          <Route path="*" element={<Navigate to="/login" replace />} />
-        </Route>
-      </Routes>
-    </Suspense>
+    <ErrorBoundary>
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route element={<AppLayout />}>
+            <Route index element={<Navigate to="/login" replace />} />
+            <Route path="/dashboard" element={<Navigate to="/directory" replace />} />
+            <Route path="/directory" element={<EmployeeDirectoryPage />} />
+            <Route path="/profile/:id" element={<EmployeeProfilePage />} />
+            <Route path="/profile" element={<EmployeeDirectoryPage />} />
+            <Route path="/requests" element={<MyRequestsPage />} />
+            <Route path="/notifications" element={<NotificationsPage />} />
+            <Route path="*" element={<Navigate to="/login" replace />} />
+          </Route>
+        </Routes>
+      </Suspense>
+    </ErrorBoundary>
   );
 };
 

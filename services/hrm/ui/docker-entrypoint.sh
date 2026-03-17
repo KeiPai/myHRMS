@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-envsubst '${VITE_API_URL}' \
+envsubst '${VITE_API_URL} ${VITE_SHELL_URL} ${VITE_SERVICE_ID}' \
   < /usr/share/nginx/html/env-config.js \
   > /tmp/env-config.js
 

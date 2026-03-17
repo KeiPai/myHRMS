@@ -26,12 +26,11 @@ export function LoginPage() {
       navigate('/profile/me', { replace: true });
     } catch (err) {
       if (err instanceof ApiUnavailableError) {
-        // API not deployed yet — dev fallback: navigate without token
-        navigate('/profile/me', { replace: true });
+        setError('serviceUnavailable');
       } else {
         setError('login_failed');
-        setIsLoading(false);
       }
+      setIsLoading(false);
     }
   };
 

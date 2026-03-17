@@ -12,6 +12,8 @@
     "dev:api": "cd services/hrm/api && bun run dev",
     "dev:ui": "cd services/hrm/ui && bun run dev",
     "test": "bun test",
+    "build": "cd services/hrm/ui && bun run build",
+    "type-check": "cd services/hrm/ui && bun run type-check",
     "lint": "eslint . --ext ts,tsx"
   },
   "engines": {

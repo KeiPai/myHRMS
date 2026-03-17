@@ -30,6 +30,7 @@ const translations = {
     resetSuccessMessage: 'If this email is registered, you\'ll receive a password reset link shortly. Please check your inbox.',
     resetInvalidDomain: 'Only @nexpando.com email addresses are accepted.',
     resetEmailNotFound: 'This email is not registered in our system.',
+    serviceUnavailable: 'Service temporarily unavailable. Please try again later.',
   },
   vi: {
     tagline: 'Cùng Nhau Phát Triển',
@@ -55,6 +56,7 @@ const translations = {
     resetSuccessMessage: 'Nếu email này đã được đăng ký, bạn sẽ nhận được liên kết đặt lại mật khẩu. Vui lòng kiểm tra hộp thư.',
     resetInvalidDomain: 'Chỉ chấp nhận email có đuôi @nexpando.com.',
     resetEmailNotFound: 'Email này chưa được đăng ký trong hệ thống.',
+    serviceUnavailable: 'Dịch vụ tạm thời không khả dụng. Vui lòng thử lại sau.',
   },
 } as const;
 
@@ -84,7 +86,11 @@ export function LoginForm({ onSubmit, isLoading = false, error }: LoginFormProps
   const [resetSent, setResetSent] = useState(false);
 
   const t = translations[lang];
-  const displayError = localErrorKey ? t[localErrorKey] : (error ? t.invalidCredentials : null);
+  const displayError = localErrorKey
+    ? t[localErrorKey]
+    : error
+      ? (error in t ? t[error as keyof typeof translations.en] : t.invalidCredentials)
+      : null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -120,8 +126,7 @@ export function LoginForm({ onSubmit, isLoading = false, error }: LoginFormProps
       setResetSent(true);
     } catch (err) {
       if (err instanceof ApiUnavailableError) {
-        // API not deployed — dev fallback: show success
-        setResetSent(true);
+        setResetErrorKey('serviceUnavailable');
       } else {
         setResetErrorKey('resetEmailNotFound');
       }

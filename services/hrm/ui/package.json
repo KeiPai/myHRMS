@@ -10,7 +10,10 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview --port 4175",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@venizia/ardor-ui-kit": "^0.0.1",

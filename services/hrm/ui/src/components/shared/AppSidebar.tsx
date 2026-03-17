@@ -15,7 +15,6 @@ import {
   Users,
   UserCircle,
   FileText,
-  PlusCircle,
   Bell,
   LogOut,
 } from 'lucide-react';
@@ -26,7 +25,6 @@ const navItems = [
   { label: 'Directory', icon: Users, href: '/directory' },
   { label: 'My Profile', icon: UserCircle, href: '/profile' },
   { label: 'Requests', icon: FileText, href: '/requests' },
-  { label: 'Create Task', icon: PlusCircle, href: '/create-task' },
   { label: 'Notifications', icon: Bell, href: '/notifications', badge: true },
 ];
 
