@@ -1,0 +1,20 @@
+{
+  "name": "hrms",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Human Resource Management System — Veni-AI SCS Architecture",
+  "workspaces": [
+    "services/hrm/api",
+    "services/hrm/ui"
+  ],
+  "scripts": {
+    "dev:api": "cd services/hrm/api && bun run dev",
+    "dev:ui": "cd services/hrm/ui && bun run dev",
+    "test": "bun test",
+    "lint": "eslint . --ext ts,tsx"
+  },
+  "engines": {
+    "bun": ">=1.0.0"
+  }
+}

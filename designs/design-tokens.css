@@ -1,0 +1,63 @@
+/* HRMS Design Tokens — Extracted from HRMSv1.pen (Figma)
+ * Map to Ardor/Tailwind CSS 4 custom properties
+ * Source: designs/design-analysis.md
+ */
+
+:root {
+  /* Brand */
+  --primary: #00a63e;
+  --primary-hover: #1ab443;
+  --primary-foreground: #ffffff;
+
+  /* Backgrounds */
+  --background: #ffffff;
+  --muted: #f9fafb;
+  --accent: #f3f4f6;
+
+  /* Text */
+  --foreground: #0a0a0a;
+  --muted-foreground: #6a7282;
+  --placeholder: #99a1af;
+
+  /* Borders */
+  --border: #e5e7eb;
+  --input: #d1d5dc;
+
+  /* Semantic — Status */
+  --destructive: #fb2c36;
+  --destructive-foreground: #c10007;
+  --info: #2b7fff;
+  --link: #155dfc;
+  --success: #008236;
+  --success-bg: #dcfce7;
+  --warning: #f54900;
+  --warning-bg: #ffedd4;
+  --error-bg: #ffe2e2;
+  --info-bg: #eff6ff;
+
+  /* Avatar */
+  --avatar-gradient-end: #00c950;
+
+  /* Category badges */
+  --category-sales-bg: #fffbeb;
+  --category-sales: #ca8a04;
+  --category-product-bg: #f3e8ff;
+  --category-product: #7c3aed;
+
+  /* Radii */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 14px;
+  --radius-2xl: 16px;
+  --radius: 8px;
+
+  /* Typography */
+  --font-sans: 'Inter', sans-serif;
+
+  /* Sidebar */
+  --sidebar-width: 256px;
+  --sidebar-bg: #ffffff;
+  --sidebar-border: #e5e7eb;
+  --sidebar-active: #1ab443;
+}

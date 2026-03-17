@@ -1,0 +1,213 @@
+openapi: 3.1.0
+info:
+  title: HRM Service API
+  description: |
+    Human Resource Management Service API - Scaffolded by Veni CLI.
+    This is the initial API contract generated with the service.
+    Business endpoints (employees, departments, etc.) will be added later.
+  version: 1.0.0
+  contact:
+    name: VENIZIA AI Platform
+servers:
+  - url: http://localhost:3006/api
+    description: Local development server
+
+tags:
+  - name: Health
+    description: Service health and status endpoints
+  - name: Authentication
+    description: Token exchange and validation endpoints
+
+paths:
+  /health:
+    get:
+      tags:
+        - Health
+      summary: Health check
+      description: Returns service health status
+      operationId: getHealth
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              example:
+                status: ok
+                timestamp: '2026-01-26T10:00:00.000Z'
+
+  /auth/exchange:
+    post:
+      tags:
+        - Authentication
+      summary: Exchange token
+      description: Exchange Keycloak token for service JWT
+      operationId: exchangeToken
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenExchangeRequest'
+      responses:
+        '200':
+          description: Token exchanged successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenExchangeResponse'
+        '401':
+          description: Invalid or expired token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/verify:
+    get:
+      tags:
+        - Authentication
+      summary: Verify token
+      description: Verify current JWT token and return user info
+      operationId: verifyToken
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Token is valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenVerifyResponse'
+        '401':
+          description: Invalid or expired token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/logout:
+    post:
+      tags:
+        - Authentication
+      summary: Logout
+      description: Invalidate current token (adds to blacklist)
+      operationId: logout
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Logged out successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogoutResponse'
+        '401':
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token from Shell authentication
+
+  schemas:
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - timestamp
+      properties:
+        status:
+          type: string
+          enum: [ok, degraded, unhealthy]
+        timestamp:
+          type: string
+          format: date-time
+
+    TokenExchangeRequest:
+      type: object
+      required:
+        - keycloakToken
+      properties:
+        keycloakToken:
+          type: string
+          description: Keycloak access token to exchange
+
+    TokenExchangeResponse:
+      type: object
+      required:
+        - accessToken
+        - expiresIn
+      properties:
+        accessToken:
+          type: string
+          description: Service JWT access token
+        expiresIn:
+          type: integer
+          description: Token expiration time in seconds
+        tokenType:
+          type: string
+          default: Bearer
+
+    TokenVerifyResponse:
+      type: object
+      required:
+        - valid
+        - user
+      properties:
+        valid:
+          type: boolean
+        user:
+          $ref: '#/components/schemas/UserInfo'
+
+    UserInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          description: User ID from Keycloak
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+
+    LogoutResponse:
+      type: object
+      required:
+        - success
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: object
+          description: Additional error details

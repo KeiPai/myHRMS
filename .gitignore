@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+.bun/
+
+# Build output
+dist/
+build/
+.vite/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+coverage/
+
+# Logs
+*.log
+logs/
+
+# Database
+*.sqlite
+*.sqlite-journal
+
+# Spec Kit temp
+.specify/scripts/__pycache__/
